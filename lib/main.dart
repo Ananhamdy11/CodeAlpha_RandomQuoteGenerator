@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
           title: 'Random Quote Generator',
           debugShowCheckedModeBanner: false,
-          home:const  HomeView()),
+          home: HomeView()),
     );
   }
 }

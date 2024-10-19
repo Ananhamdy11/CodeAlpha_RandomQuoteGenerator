@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:quote_generator/feautres/home/data/quote_model/quote_model.dart';
 
 part 'quote_state.dart';
 

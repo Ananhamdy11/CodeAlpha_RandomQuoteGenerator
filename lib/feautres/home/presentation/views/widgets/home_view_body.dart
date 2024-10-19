@@ -38,7 +38,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     const SizedBox(width: 20,),
                     ElevatedButton(
                     onPressed: ()=> Share.share(state.quote),
-                    child: Text('Share',style: TextStyle(color:Colors.black),)
+                    child: const Text('Share',style: TextStyle(color:Colors.black),)
                     ),
               
 
@@ -48,7 +48,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             ),
           ));
         } else if (state is QuoteFailure) {
-          print(state.error);
+         // print(state.error);
           return Center(child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(

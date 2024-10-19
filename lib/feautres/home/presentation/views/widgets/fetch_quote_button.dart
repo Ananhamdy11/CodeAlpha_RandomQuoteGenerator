@@ -15,7 +15,7 @@ class FetchQuoteButton extends StatelessWidget {
         onPressed: () {
           cubit.fetchQuote();
         },
-        child: Text('New Quote',style: TextStyle(color:Colors.black),)
+        child:const Text('New Quote',style: TextStyle(color:Colors.black),)
         );
   }
 }
