@@ -1,81 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quote_generator/feautres/home/presentation/manager/cubit/quote_cubit.dart';
-import 'package:quote_generator/feautres/home/presentation/views/widgets/fetch_quote_button.dart';
-import 'package:quote_generator/feautres/home/presentation/views/widgets/quote_body.dart';
-import 'package:share_plus/share_plus.dart';
 
-class HomeViewBody extends StatefulWidget {
+class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
 
-  @override
-  State<HomeViewBody> createState() => _HomeViewBodyState();
-}
-
-class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QuoteCubit, QuoteState>(
       builder: (context, state) {
-           final cubit = context.read<QuoteCubit>();
+        if(state is QuoteLoading){
+          return const Center(child: CircularProgressIndicator(),);
+        }else if(state is FavoriteQuoteState){
+          return Center(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.favorites.length,
+                    itemBuilder: (context,index){
+                      final favoriteQuotes= state.favorites[index];
 
-        if (state is QuoteLoading) {
-          return const Center(
-            child: CircularProgressIndicator()
+                      return Container(
+                       width: MediaQuery.of(context).size.width*0.9,
+                       height: MediaQuery.of(context).size.height*0.25,
+                       decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(15),
+
+                       ),
+                       child: Row(
+                         children: [
+
+                           Column(
+                            children: [
+                              Text(favoriteQuotes.quote),
+                              const SizedBox(height: 10,),
+                              Text(TimeOfDay.now().toString())
+                            ],
+                           ),
+                           IconButton(
+                            onPressed: (){
+                              context.read<QuoteCubit>().deleteFavoriteQuote(index);
+                            },
+                             icon:const Icon(Icons.delete)
+                             )
+                         ],
+                       ),
+                      );
+
+                    }
+                    )
+                  )
+              ],
+            ),
           );
-        } else if (state is QuoteSuccess) {
-          return Center(child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                QuoteBody(text: state.quote,),
-                const SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FetchQuoteButton(cubit: cubit,),
-                    const SizedBox(width: 20,),
-                    ElevatedButton(
-                    onPressed: ()=> Share.share(state.quote),
-                    child: const Text('Share',style: TextStyle(color:Colors.black),)
-                    ),
-              
-
-                  ],
-                )
-              ],
-            ),
-          ));
-        } else if (state is QuoteFailure) {
-         // print(state.error);
-          return Center(child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                QuoteBody(text: state.error,),
-                const SizedBox(height: 20,),
-                FetchQuoteButton(cubit: cubit,)
-              ],
-            ),
-          ));
-        
-        } else {
-          return Center(child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               const QuoteBody(text: 'Press To Get Quote ! ',),
-                const SizedBox(height: 20,),
-                FetchQuoteButton(cubit: cubit,)
-              ],
-            ))
-            );
+        }else{
+          return const Center(child: Text("NO Favorites Quotes ! "),);
         }
       },
     );
-  }
 }
-
+}

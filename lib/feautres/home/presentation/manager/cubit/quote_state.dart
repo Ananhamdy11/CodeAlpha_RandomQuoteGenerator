@@ -19,3 +19,14 @@ final class QuoteFailure extends QuoteState {
 
   QuoteFailure(this.error);
 }
+
+
+final class FavoriteQuoteState extends QuoteState {
+  final List <Quote> favorites;
+
+  FavoriteQuoteState(this.favorites);
+
+}
+
+
+

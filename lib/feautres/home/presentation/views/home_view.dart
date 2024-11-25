@@ -6,9 +6,11 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold( 
-      body: HomeViewBody(),
-      backgroundColor: Color(0xff000000)
+    return  Scaffold(
+      appBar: AppBar(
+        title:const Center(child: Text('DQUOTE')),
+      ),
+      body:const HomeViewBody(),
     );
   }
 }

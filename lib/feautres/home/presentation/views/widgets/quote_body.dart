@@ -8,16 +8,15 @@ class QuoteBody extends StatelessWidget {
 
     return Container(
       width:double.infinity,
-      //height: 100,
+      height: MediaQuery.of(context).size.height*0.60,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.purpleAccent,
         borderRadius: BorderRadius.circular(10),
         
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Text(text.toString(),maxLines: 4,style:const TextStyle(
-          color: Colors.black,
+      child: Center(
+        child: Text(text.toString(),style:const TextStyle(
+          color: Colors.white,
           fontSize: 18,
         
         )),
