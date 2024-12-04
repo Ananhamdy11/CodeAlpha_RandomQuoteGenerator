@@ -5,10 +5,13 @@ import 'package:quote_generator/feautres/home/presentation/manager/cubit/quote_c
 import 'package:quote_generator/feautres/home/presentation/views/quote_view.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 void main() async{
+WidgetsFlutterBinding.ensureInitialized();
 await Hive.initFlutter();
-final favoriteQuotesBox = await Hive.openBox<Quote>('favorites');
 Hive.registerAdapter(QuoteAdapter());
+final favoriteQuotesBox = await Hive.openBox<Quote>('favorites');
+await favoriteQuotesBox.compact();
 
+// favoriteQuotesBox.clear();
 // await Hive.openBox<String>('favorites');
 
   runApp( MyApp(favoriteQuotesBox: favoriteQuotesBox,));

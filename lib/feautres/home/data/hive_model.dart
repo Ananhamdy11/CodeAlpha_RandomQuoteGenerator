@@ -6,5 +6,7 @@ class Quote extends HiveObject {
   final String quote ;
 
   Quote({required this.quote});
+   @override
+  String toString() => 'Quote(quote: $quote)';
 
 }

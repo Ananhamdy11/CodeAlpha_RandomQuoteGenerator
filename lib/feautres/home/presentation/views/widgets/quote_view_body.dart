@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quote_generator/feautres/home/data/hive_model.dart';
 import 'package:quote_generator/feautres/home/presentation/manager/cubit/quote_cubit.dart';
 import 'package:quote_generator/feautres/home/presentation/views/home_view.dart';
@@ -16,6 +15,9 @@ class QuoteViewBody extends StatefulWidget {
 }
 
 class _QuoteViewBodyState extends State<QuoteViewBody> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QuoteCubit, QuoteState>(
@@ -40,7 +42,17 @@ class _QuoteViewBodyState extends State<QuoteViewBody> {
                       final favoritequote= Quote(
                         quote: state.quote
                         );
+                       // print(state.quote);
                         context.read<QuoteCubit>().addFavorites(favoritequote);
+                        Navigator.push(
+                          context,
+                           MaterialPageRoute(
+                            builder: (context) => const HomeView())
+                            ).then((_) {
+  // Trigger fetch when returning
+                 context.read<QuoteCubit>().fetchQuote();
+});
+
                     }, child: const Row(
                       children: [
                         Icon(Icons.favorite_border,color: Colors.black,),
@@ -77,7 +89,8 @@ class _QuoteViewBodyState extends State<QuoteViewBody> {
               children: [
                 QuoteBody(text: state.error,),
                 const SizedBox(height: 20,),
-                FetchQuoteButton(cubit: cubit,)
+                FetchQuoteButton(cubit: cubit,),
+
               ],
             ),
           ));

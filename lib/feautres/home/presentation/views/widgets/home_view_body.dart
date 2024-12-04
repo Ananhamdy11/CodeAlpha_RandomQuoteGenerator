@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quote_generator/feautres/home/presentation/manager/cubit/quote_cubit.dart';
@@ -5,13 +7,27 @@ import 'package:quote_generator/feautres/home/presentation/manager/cubit/quote_c
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
 
+Color _generateRandomColor() {
+    final random = Random();
+    return Color.fromARGB(
+      255,
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+    );
+  }
   @override
   Widget build(BuildContext context) {
+   
     return BlocBuilder<QuoteCubit, QuoteState>(
       builder: (context, state) {
-        if(state is QuoteLoading){
-          return const Center(child: CircularProgressIndicator(),);
-        }else if(state is FavoriteQuoteState){
+          if (state is FavoriteLoadingQuoteState) {
+      return const Center(child: CircularProgressIndicator());
+    } else if(state is FavoriteSuccessQuoteState){
+         // print(context.read<QuoteCubit>().favoriteQuotesBox.values);
+          if (state.favorites.isEmpty) {
+        return const Center(child: Text('No Favorite Quotes!'));
+      }
           return Center(
             child: Column(
               children: [
@@ -21,32 +37,44 @@ class HomeViewBody extends StatelessWidget {
                     itemBuilder: (context,index){
                       final favoriteQuotes= state.favorites[index];
 
-                      return Container(
-                       width: MediaQuery.of(context).size.width*0.9,
-                       height: MediaQuery.of(context).size.height*0.25,
-                       decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(15),
-
-                       ),
-                       child: Row(
-                         children: [
-
-                           Column(
-                            children: [
-                              Text(favoriteQuotes.quote),
-                              const SizedBox(height: 10,),
-                              Text(TimeOfDay.now().toString())
-                            ],
+                      return Column(
+                        children: [
+                          Container(
+                           width: MediaQuery.of(context).size.width*0.95,
+                           decoration: BoxDecoration(
+                            color:_generateRandomColor(),
+                            borderRadius: BorderRadius.circular(15),
+                          
                            ),
-                           IconButton(
-                            onPressed: (){
-                              context.read<QuoteCubit>().deleteFavoriteQuote(index);
-                            },
-                             icon:const Icon(Icons.delete)
-                             )
-                         ],
-                       ),
+                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                             children: [
+                          
+                               Flexible(
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(8),
+                                   child: Text(favoriteQuotes.quote,softWrap: true,
+                                   
+                                  // overflow: TextOverflow.ellipsis,
+                                   style:const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
+                                   ),
+                                                                   ),
+                                 ),
+                               ),
+                               IconButton(
+                                onPressed: (){
+                                  context.read<QuoteCubit>().deleteFavoriteQuote(index);
+                                },
+                                 icon:const Icon(Icons.delete,color: Colors.white,)
+                                 )
+                             ],
+                           ),
+                          ),
+                          const SizedBox(height: 20,)
+                        ],
                       );
 
                     }
@@ -55,8 +83,10 @@ class HomeViewBody extends StatelessWidget {
               ],
             ),
           );
-        }else{
-          return const Center(child: Text("NO Favorites Quotes ! "),);
+        }else if (state is FavoriteQuoteFailureState) {
+      return Center(child: Text(state.error));
+    }else{
+          return const Center(child: CircularProgressIndicator(),);
         }
       },
     );

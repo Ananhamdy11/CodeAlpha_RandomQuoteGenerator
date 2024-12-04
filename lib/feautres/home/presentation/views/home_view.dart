@@ -9,6 +9,7 @@ class HomeView extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(
         title:const Center(child: Text('DQUOTE')),
+        
       ),
       body:const HomeViewBody(),
     );

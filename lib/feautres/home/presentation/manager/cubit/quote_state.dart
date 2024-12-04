@@ -21,12 +21,18 @@ final class QuoteFailure extends QuoteState {
 }
 
 
-final class FavoriteQuoteState extends QuoteState {
+final class FavoriteSuccessQuoteState extends QuoteState {
   final List <Quote> favorites;
 
-  FavoriteQuoteState(this.favorites);
+  FavoriteSuccessQuoteState(this.favorites);
 
 }
 
+final class FavoriteLoadingQuoteState extends QuoteState {}
+final class FavoriteQuoteFailureState extends QuoteState {
+  final String error;
 
+  FavoriteQuoteFailureState(this.error);
+
+}
 
